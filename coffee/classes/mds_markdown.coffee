@@ -1,8 +1,10 @@
 highlightJs  = require 'highlight.js'
 twemoji      = require 'twemoji'
 extend       = require 'extend'
+fs           = require 'fs'
 markdownIt   = require 'markdown-it'
 Path         = require 'path'
+util         = require('util')
 MdsMdSetting = require './mds_md_setting'
 {exist}      = require './mds_file'
 
@@ -73,14 +75,23 @@ module.exports = class MdsMarkdown
 
       mdElm
         .children('.slide_wrapper')
-        .each ->
-          $t = $(@)
+        .each (idx, el) ->
+          $t = $(el)
 
           # Page directives for themes
           page = $t[0].id
           for prop, val of md.settings.getAt(+page, false)
             $t.attr("data-#{prop}", val)
             $t.find('footer.slide_footer:last').text(val) if prop == 'footer'
+
+          if idx > 0
+            $prevSlide = mdElm.children('.slide_wrapper').eq(idx - 1)
+            prevSlideNum = parseInt($prevSlide.find('.slide_page').text())
+
+            if md.settings.getAt(+page, false).page_same == true
+              $t.find('.slide_page').text(prevSlideNum)
+            else
+              $t.find('.slide_page').text(prevSlideNum + 1)
 
           # Detect "only-***" elements
           inner = $t.find('.slide > .slide_inner')
@@ -140,6 +151,7 @@ module.exports = class MdsMarkdown
                         #{@markdown.render markdown}
                         #{MdsMarkdown.slideTagClose(@_rulers.length + 1)}
                         """
+
     ret =
       parsed: @lastParsed
       settingsPosition: @settingsPosition

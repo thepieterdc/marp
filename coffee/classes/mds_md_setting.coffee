@@ -31,6 +31,7 @@ module.exports = class MdsMdSetting
       basename = path.basename(v)
       return if basename in ['default', 'gaia'] then "css/themes/#{basename}.css" else null
     template: (v) -> v
+    page_same: MdsMdSetting.generalTransfomer.bool
     footer: (v) -> v
     prerender: MdsMdSetting.generalTransfomer.bool
 
@@ -99,7 +100,7 @@ module.exports = class MdsMdSetting
 
   @validProps:
     global: ['width', 'height', 'size', 'theme']
-    page:   ['page_number', 'template', 'footer', 'prerender']
+    page:   ['page_number', 'template', 'page_same', 'footer', 'prerender']
 
   @isValidProp: (page, prop) =>
     target = if page > 0 then 'page' else 'global'

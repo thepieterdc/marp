@@ -10,7 +10,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "start": "gulp compile && electron . --development",
+    "start": "gulp compile && electron . --development --enable-logging",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Yuki Hattori",
@@ -50,6 +50,7 @@
     "markdown-it-emoji": "^1.4.0",
     "markdown-it-katex": "^2.0.1",
     "markdown-it-mark": "^2.0.0",
+    "natives": "^1.1.6",
     "path": "^0.12.7",
     "photon": "github:connors/photon",
     "twemoji": "^11.2.0"
